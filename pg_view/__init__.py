@@ -71,6 +71,7 @@ def parse_args():
                                            '(or a directory path for the unix socket connection)',
                       action='store', dest='host')
     parser.add_option('-p', '--port', help='database port number', action='store', dest='port')
+    parser.add_option('-s', '--service', help='name of the service to monitor', action='store', dest='service')
 
     options, args = parser.parse_args()
     return options, args
@@ -203,9 +204,9 @@ def main():
             if not establish_user_defined_connection(instance, conn, clusters):
                 logger.error('failed to acquire details about ' +
                              'the database cluster {0}, the server will be skipped'.format(instance))
-    elif options.instance:
-        if not establish_user_defined_connection(options.instance, {'service': options.instance}, clusters):
-            logger.error("unable to continue with cluster {0}".format(options.instance))
+    elif options.service:
+        if not establish_user_defined_connection(options.service, {'service': options.service}, clusters):
+            logger.error("unable to continue with cluster {0}".format(options.service))
     elif options.host:
         # try to connet to the database specified by command-line options
         conn = build_connection(options.host, options.port, options.username, options.dbname)
